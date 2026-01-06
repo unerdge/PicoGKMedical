@@ -12,7 +12,7 @@ namespace TestHello
     using System.Reflection.Emit;
     using System.Text.RegularExpressions;
     using static System.Math;
-    class Greeting
+    class Program
     {
         static void Main(string[] args)
         {
