@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("BoneConstruct")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("MagicCube")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5bdb85f85dd2a589aa04f686819f6011811273ce")]
-[assembly: System.Reflection.AssemblyProductAttribute("BoneConstruct")]
-[assembly: System.Reflection.AssemblyTitleAttribute("BoneConstruct")]
+[assembly: System.Reflection.AssemblyProductAttribute("MagicCube")]
+[assembly: System.Reflection.AssemblyTitleAttribute("MagicCube")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // 由 MSBuild WriteCodeFragment 类生成。
