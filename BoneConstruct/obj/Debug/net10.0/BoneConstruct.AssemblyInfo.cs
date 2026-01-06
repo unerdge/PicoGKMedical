@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BoneConstruct")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d9d617709fde33ae264d191641f522e002b7b160")]
 [assembly: System.Reflection.AssemblyProductAttribute("BoneConstruct")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BoneConstruct")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
