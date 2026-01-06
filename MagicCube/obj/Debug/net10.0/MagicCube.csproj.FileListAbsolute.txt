@@ -1,0 +1,15 @@
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\bin\Debug\net10.0\MagicCube.exe
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\bin\Debug\net10.0\MagicCube.deps.json
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\bin\Debug\net10.0\MagicCube.runtimeconfig.json
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\bin\Debug\net10.0\MagicCube.dll
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\bin\Debug\net10.0\MagicCube.pdb
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\obj\Debug\net10.0\MagicCube.GeneratedMSBuildEditorConfig.editorconfig
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\obj\Debug\net10.0\MagicCube.AssemblyInfoInputs.cache
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\obj\Debug\net10.0\MagicCube.AssemblyInfo.cs
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\obj\Debug\net10.0\MagicCube.csproj.CoreCompileInputs.cache
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\obj\Debug\net10.0\MagicCube.sourcelink.json
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\obj\Debug\net10.0\MagicCube.dll
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\obj\Debug\net10.0\refint\MagicCube.dll
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\obj\Debug\net10.0\MagicCube.pdb
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\obj\Debug\net10.0\MagicCube.genruntimeconfig.cache
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\obj\Debug\net10.0\ref\MagicCube.dll
