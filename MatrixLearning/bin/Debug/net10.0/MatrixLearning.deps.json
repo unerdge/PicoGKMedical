@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "MatrixLearning/1.0.0": {
+        "runtime": {
+          "MatrixLearning.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "MatrixLearning/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
