@@ -1,4 +1,2 @@
-BoneConstruct/obj/Debug/net10.0/BoneConstruct.AssemblyInfo.cs
-BoneConstruct/obj/Debug/net10.0/BoneConstruct.AssemblyInfoInputs.cache
-MagicCube/obj/Debug/net10.0/MagicCube.AssemblyInfo.cs
-MagicCube/obj/Debug/net10.0/MagicCube.AssemblyInfoInputs.cache
+**/obj/Debug/net10.0/*.AssemblyInfo.cs
+**/obj/Debug/net10.0/*.AssemblyInfoInputs.cache
