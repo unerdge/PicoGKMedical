@@ -4,14 +4,14 @@ namespace BoneConstruct
 {
     public static class Example
     {
-        public static void Run()
+        public static void Run(float resolutionRatio = 0.2f)
         {
             string strOutputFolder = "E:/desktop_files/workplace/vscode/C#(picoGK)/LEAP71/PicoGK_Examples-mainj/log";
 
             try
             {
                 PicoGK.Library.Go(
-                    0.2f,
+                    resolutionRatio,
                     Leap71.CoolCube.HelixHeatX.Task);
                 // PicoGK.Library.Go(
                 //     0.1f,
