@@ -1,11 +1,83 @@
 {
   "version": 3,
   "targets": {
-    "net10.0": {}
+    "net10.0": {
+      "PicoGK/1.7.7.4": {
+        "type": "package",
+        "compile": {
+          "lib/net9.0/PicoGK.dll": {}
+        },
+        "runtime": {
+          "lib/net9.0/PicoGK.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/osx-arm64/native/picogk.1.7.dylib": {
+            "assetType": "native",
+            "rid": "osx-arm64"
+          },
+          "runtimes/osx-arm64/native/picogk.1.7_liblzma.5.dylib": {
+            "assetType": "native",
+            "rid": "osx-arm64"
+          },
+          "runtimes/osx-arm64/native/picogk.1.7_libzstd.1.dylib": {
+            "assetType": "native",
+            "rid": "osx-arm64"
+          },
+          "runtimes/win-x64/native/blosc.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/lz4.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/picogk.1.7.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/tbb12.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/zlib1.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/zstd.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          }
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "PicoGK/1.7.7.4": {
+      "sha512": "9mXTIQ/FTRe/KmHbDOKX7XsHWhRYIuuC7N1ZAf1QyA/oaTo4tPYAKUSyd+7kVtha375Y4KegunzBgHBqsQRK6g==",
+      "type": "package",
+      "path": "picogk/1.7.7.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net9.0/PicoGK.dll",
+        "picogk.1.7.7.4.nupkg.sha512",
+        "picogk.nuspec",
+        "runtimes/osx-arm64/native/picogk.1.7.dylib",
+        "runtimes/osx-arm64/native/picogk.1.7_liblzma.5.dylib",
+        "runtimes/osx-arm64/native/picogk.1.7_libzstd.1.dylib",
+        "runtimes/win-x64/native/blosc.dll",
+        "runtimes/win-x64/native/lz4.dll",
+        "runtimes/win-x64/native/picogk.1.7.dll",
+        "runtimes/win-x64/native/tbb12.dll",
+        "runtimes/win-x64/native/zlib1.dll",
+        "runtimes/win-x64/native/zstd.dll"
+      ]
+    }
+  },
   "projectFileDependencyGroups": {
-    "net10.0": []
+    "net10.0": [
+      "PicoGK >= 1.7.7.4"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\unerdge\\.nuget\\packages\\": {},
@@ -56,6 +128,12 @@
     "frameworks": {
       "net10.0": {
         "targetAlias": "net10.0",
+        "dependencies": {
+          "PicoGK": {
+            "target": "Package",
+            "version": "[1.7.7.4, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",

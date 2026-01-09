@@ -12,12 +12,12 @@ namespace TestHello
     using System.Reflection.Emit;
     using System.Text.RegularExpressions;
     using static System.Math;
+    using PicoGK;
     class Program
     {
         static void Main(string[] args)
         {
-            MagicCube dim3Cube=new MagicCube(3,MagicCube.ScanOrder.CenterFirst);
-            dim3Cube.Search();
+            
         }
     }
 }
