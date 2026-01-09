@@ -13,3 +13,15 @@ E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\obj\
 E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\obj\Debug\net10.0\MagicCube.pdb
 E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\obj\Debug\net10.0\MagicCube.genruntimeconfig.cache
 E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\obj\Debug\net10.0\ref\MagicCube.dll
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\bin\Debug\net10.0\PicoGK.dll
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\bin\Debug\net10.0\runtimes\osx-arm64\native\picogk.1.7.dylib
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\bin\Debug\net10.0\runtimes\osx-arm64\native\picogk.1.7_liblzma.5.dylib
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\bin\Debug\net10.0\runtimes\osx-arm64\native\picogk.1.7_libzstd.1.dylib
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\bin\Debug\net10.0\runtimes\win-x64\native\blosc.dll
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\bin\Debug\net10.0\runtimes\win-x64\native\lz4.dll
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\bin\Debug\net10.0\runtimes\win-x64\native\picogk.1.7.dll
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\bin\Debug\net10.0\runtimes\win-x64\native\tbb12.dll
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\bin\Debug\net10.0\runtimes\win-x64\native\zlib1.dll
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\bin\Debug\net10.0\runtimes\win-x64\native\zstd.dll
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\obj\Debug\net10.0\MagicCube.csproj.AssemblyReference.cache
+E:\desktop_files\workplace\vscode\C#(picoGK)\LEAP71\PicoGKMedical\MagicCube\obj\Debug\net10.0\MagicCube.csproj.Up2Date
