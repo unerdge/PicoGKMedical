@@ -48,13 +48,13 @@ namespace Leap71
             public enum                 EInput { FUNC, IMAGE };
             public enum                 ELine { FIRST, SECOND };
 
-            protected Image             m_oImage;
-            protected RatioFunc         m_oFunc;
-            protected MappingFunc       m_oMappingFunc;
+            protected Image?            m_oImage;
+            protected RatioFunc?        m_oFunc;
+            protected MappingFunc?      m_oMappingFunc;
             protected EInput            m_eInput;
             protected ELine             m_eLine;
-            protected LineModulation    m_oLineModulation;
-            protected float             m_fConstValue;
+            protected LineModulation?   m_oLineModulation;
+            protected float            m_fConstValue;
 
 
             /// <summary>
@@ -108,11 +108,11 @@ namespace Leap71
             {
                 if (m_eLine == ELine.FIRST)
                 {
-                    return m_oLineModulation.fGetModulation(fPhi);
+                    return m_oLineModulation!.fGetModulation(fPhi);
                 }
                 else
                 {
-                    return m_oLineModulation.fGetModulation(fLengthRatio);
+                    return m_oLineModulation!.fGetModulation(fLengthRatio);
                 }
             }
 
@@ -133,12 +133,12 @@ namespace Leap71
                 }
                 else if (m_eInput == EInput.IMAGE)
                 {
-                    int nXRange         = m_oImage.nWidth - 1;
-                    int nYRange         = m_oImage.nHeight - 1;
+                    int nXRange         = m_oImage!.nWidth - 1;
+                    int nYRange         = m_oImage!.nHeight - 1;
                     int x               = (int)float.Round(nXRange - fPhi * nXRange);
                     int y               = (int)float.Round(fLengthRatio * nYRange);
-                    float fGrayValue    = m_oImage.fValue(x, y);
-                    float fValue        = m_oMappingFunc(fGrayValue);
+                    float fGrayValue    = m_oImage!.fValue(x, y);
+                    float fValue        = m_oMappingFunc!(fGrayValue);
                     return fValue;
                 }
                 else
