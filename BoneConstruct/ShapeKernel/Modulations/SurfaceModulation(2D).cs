@@ -129,7 +129,7 @@ namespace Leap71
             {
                 if (m_eInput == EInput.FUNC)
                 {
-                    return m_oFunc(fPhi, fLengthRatio);
+                    return m_oFunc!(fPhi, fLengthRatio);
                 }
                 else if (m_eInput == EInput.IMAGE)
                 {
