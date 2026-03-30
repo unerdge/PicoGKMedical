@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\desktop_files\\workplace\\vscode\\C#(picoGK)\\LEAP71\\PicoGKMedical\\MatrixLearning\\MatrixLearning.csproj": {}
+    "E:\\desktop_files\\workplace\\vscode\\Csharp\\LEAP71\\PicoGKMedical\\MatrixLearning\\MatrixLearning.csproj": {}
   },
   "projects": {
-    "E:\\desktop_files\\workplace\\vscode\\C#(picoGK)\\LEAP71\\PicoGKMedical\\MatrixLearning\\MatrixLearning.csproj": {
+    "E:\\desktop_files\\workplace\\vscode\\Csharp\\LEAP71\\PicoGKMedical\\MatrixLearning\\MatrixLearning.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\desktop_files\\workplace\\vscode\\C#(picoGK)\\LEAP71\\PicoGKMedical\\MatrixLearning\\MatrixLearning.csproj",
+        "projectUniqueName": "E:\\desktop_files\\workplace\\vscode\\Csharp\\LEAP71\\PicoGKMedical\\MatrixLearning\\MatrixLearning.csproj",
         "projectName": "MatrixLearning",
-        "projectPath": "E:\\desktop_files\\workplace\\vscode\\C#(picoGK)\\LEAP71\\PicoGKMedical\\MatrixLearning\\MatrixLearning.csproj",
+        "projectPath": "E:\\desktop_files\\workplace\\vscode\\Csharp\\LEAP71\\PicoGKMedical\\MatrixLearning\\MatrixLearning.csproj",
         "packagesPath": "C:\\Users\\unerdge\\.nuget\\packages\\",
-        "outputPath": "E:\\desktop_files\\workplace\\vscode\\C#(picoGK)\\LEAP71\\PicoGKMedical\\MatrixLearning\\obj\\",
+        "outputPath": "E:\\desktop_files\\workplace\\vscode\\Csharp\\LEAP71\\PicoGKMedical\\MatrixLearning\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "E:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

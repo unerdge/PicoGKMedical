@@ -30,7 +30,7 @@ namespace TestHello
             else DIM=3;
             UsedPos=new bool [DIM,DIM];
             UsedNum=new bool [DIM*DIM];
-            Cube=new int? [DIM,DIM];
+            Cube=new int? [DIM,DIM];//null还没被填，
             average=(DIM*DIM+1)*DIM/2;
             for(int i = 0; i < DIM; i++)
             {
@@ -200,7 +200,7 @@ namespace TestHello
                 return LineFirstCheckSum(x,y);
             }
         }
-        public void Search(int x,int y)
+        public void Search(int x,int y)//深度优先搜索
         {
             if (!(x.InRange(0,DIM-1) && y.InRange(0, DIM - 1)))
             {

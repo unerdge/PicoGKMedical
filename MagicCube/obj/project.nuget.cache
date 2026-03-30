@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/t0k11anuM4=",
+  "dgSpecHash": "D7smmEUrQiE=",
   "success": true,
-  "projectFilePath": "E:\\desktop_files\\workplace\\vscode\\C#(picoGK)\\LEAP71\\PicoGKMedical\\MagicCube\\MagicCube.csproj",
+  "projectFilePath": "E:\\desktop_files\\workplace\\vscode\\Csharp\\LEAP71\\PicoGKMedical\\MagicCube\\MagicCube.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\unerdge\\.nuget\\packages\\picogk\\1.7.7.4\\picogk.1.7.7.4.nupkg.sha512"
   ],

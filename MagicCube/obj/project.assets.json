@@ -86,11 +86,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\desktop_files\\workplace\\vscode\\C#(picoGK)\\LEAP71\\PicoGKMedical\\MagicCube\\MagicCube.csproj",
+      "projectUniqueName": "E:\\desktop_files\\workplace\\vscode\\Csharp\\LEAP71\\PicoGKMedical\\MagicCube\\MagicCube.csproj",
       "projectName": "MagicCube",
-      "projectPath": "E:\\desktop_files\\workplace\\vscode\\C#(picoGK)\\LEAP71\\PicoGKMedical\\MagicCube\\MagicCube.csproj",
+      "projectPath": "E:\\desktop_files\\workplace\\vscode\\Csharp\\LEAP71\\PicoGKMedical\\MagicCube\\MagicCube.csproj",
       "packagesPath": "C:\\Users\\unerdge\\.nuget\\packages\\",
-      "outputPath": "E:\\desktop_files\\workplace\\vscode\\C#(picoGK)\\LEAP71\\PicoGKMedical\\MagicCube\\obj\\",
+      "outputPath": "E:\\desktop_files\\workplace\\vscode\\Csharp\\LEAP71\\PicoGKMedical\\MagicCube\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "E:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

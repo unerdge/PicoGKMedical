@@ -17,7 +17,8 @@ namespace TestHello
     {
         static void Main(string[] args)
         {
-            
+            MagicCube mc=new MagicCube(3,MagicCube.ScanOrder.CenterFirst);
+            mc.Search();
         }
     }
 }
