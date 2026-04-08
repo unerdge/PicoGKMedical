@@ -1,2 +1,7 @@
-**/obj/Debug/net10.0/*.AssemblyInfo.cs
-**/obj/Debug/net10.0/*.AssemblyInfoInputs.cache
+# Build outputs
+**/bin/
+**/obj/
+
+# But keep runtime files
+!**/bin/runtime/
+!**/bin/runtime/**

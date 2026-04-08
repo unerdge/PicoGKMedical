@@ -1,5 +1,4 @@
 using PicoGK;
-using System.Numerics;
 
 namespace BoxCanvasDesigner;
 
@@ -24,19 +23,21 @@ class Example
     {
         try
         {
-            Library.oViewer().SetGroupMaterial(0, "FF0000", 0.0f, 1.0f);
+            // 创建盒型参数 - 邮寄盒示例
+            // 内部尺寸: 220mm × 150mm × 80mm, 壁厚: 3mm
+            var parameters = new BoxParameters(
+                Type: BoxType.Mailer,
+                LengthMM: 220,
+                WidthMM: 150,
+                HeightMM: 80,
+                WallThicknessMM: 3.0f
+            );
 
-            // 创建一个简单的盒子示例
-            Lattice lat = new Lattice();
-            lat.AddBeam(new Vector3(0, 0, 0), new Vector3(50, 0, 0), 2.0f, 2.0f, false);
-            lat.AddBeam(new Vector3(50, 0, 0), new Vector3(50, 50, 0), 2.0f, 2.0f, false);
-            lat.AddBeam(new Vector3(50, 50, 0), new Vector3(0, 50, 0), 2.0f, 2.0f, false);
-            lat.AddBeam(new Vector3(0, 50, 0), new Vector3(0, 0, 0), 2.0f, 2.0f, false);
+            // 生成并预览盒子
+            var generator = new BoxGenerator(parameters);
+            generator.Preview();
 
-            Voxels voxBox = new Voxels(lat);
-            Library.oViewer().Add(voxBox);
-
-            Console.WriteLine("3D Box Canvas Designer - 示例运行成功");
+            Console.WriteLine("3D Box Canvas Designer - 参数化盒型生成成功");
         }
         catch (Exception ex)
         {
