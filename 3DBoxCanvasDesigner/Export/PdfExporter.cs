@@ -38,7 +38,7 @@ public class PdfExporter
         float offsetX = 50; // 左边距50点
         float offsetY = 50; // 上边距50点
 
-        // 绘制标题
+        // 绘制标题（使用XStringFormats，不创建XFont对象）
         DrawTitle(gfx, parameters, offsetX, 20);
 
         // 绘制切割线（实线，黑色）
@@ -64,18 +64,13 @@ public class PdfExporter
         }
 
         // 绘制面板标签
-        XFont labelFont = new XFont("Arial", 8);
-        XBrush labelBrush = XBrushes.Red;
-        foreach (var panel in dieline.Panels)
-        {
-            DrawPanelLabel(gfx, panel, labelFont, labelBrush, scale, offsetX, offsetY);
-        }
+        DrawPanelLabels(gfx, dieline.Panels, scale, offsetX, offsetY);
 
         // 绘制尺寸标注
         DrawDimensions(gfx, dieline, parameters, scale, offsetX, offsetY);
 
         // 绘制图例
-        DrawLegend(gfx, page.Width - 150, 50);
+        DrawLegend(gfx, page.Width.Point - 150, 50);
 
         // 保存文件
         document.Save(filePath);
@@ -101,13 +96,34 @@ public class PdfExporter
     /// </summary>
     private void DrawTitle(XGraphics gfx, BoxParameters parameters, float x, float y)
     {
-        XFont titleFont = new XFont("Arial", 14, XFontStyleEx.Bold);
-        string title = $"刀版 - {GetBoxTypeName(parameters.Type)}";
-        gfx.DrawString(title, titleFont, XBrushes.Black, x, y);
+        string title = $"Dieline - {GetBoxTypeName(parameters.Type)}";
+        string info = $"Size: {parameters.LengthMM} x {parameters.WidthMM} x {parameters.HeightMM} mm  |  Wall: {parameters.WallThicknessMM} mm";
 
-        XFont infoFont = new XFont("Arial", 10);
-        string info = $"尺寸: {parameters.LengthMM} × {parameters.WidthMM} × {parameters.HeightMM} mm  |  壁厚: {parameters.WallThicknessMM} mm";
+        // 使用PDF内置字体
+        XFont titleFont = new XFont("Helvetica", 14, XFontStyleEx.Bold, new XPdfFontOptions(PdfFontEncoding.WinAnsi));
+        XFont infoFont = new XFont("Helvetica", 10, XFontStyleEx.Regular, new XPdfFontOptions(PdfFontEncoding.WinAnsi));
+
+        gfx.DrawString(title, titleFont, XBrushes.Black, x, y);
         gfx.DrawString(info, infoFont, XBrushes.Gray, x, y + 20);
+    }
+
+    /// <summary>
+    /// 绘制面板标签（批量处理）
+    /// </summary>
+    private void DrawPanelLabels(XGraphics gfx, List<Panel> panels, float scale, float offsetX, float offsetY)
+    {
+        XFont font = new XFont("Helvetica", 8, XFontStyleEx.Regular, new XPdfFontOptions(PdfFontEncoding.WinAnsi));
+        XBrush brush = XBrushes.Red;
+
+        foreach (var panel in panels)
+        {
+            float x = panel.Center.X * scale + offsetX;
+            float y = panel.Center.Y * scale + offsetY;
+
+            string label = $"{panel.Name} {panel.WidthMM:F0}x{panel.HeightMM:F0}mm";
+            XSize size = gfx.MeasureString(label, font);
+            gfx.DrawString(label, font, brush, x - size.Width / 2, y);
+        }
     }
 
     /// <summary>
@@ -163,7 +179,7 @@ public class PdfExporter
     private void DrawDimensions(XGraphics gfx, DielineData dieline, BoxParameters parameters, float scale, float offsetX, float offsetY)
     {
         XPen dimPen = new XPen(XColors.DarkGray, 0.3);
-        XFont dimFont = new XFont("Arial", 7);
+        XFont dimFont = new XFont("Helvetica", 7, XFontStyleEx.Regular, new XPdfFontOptions(PdfFontEncoding.WinAnsi));
         XBrush dimBrush = XBrushes.DarkGray;
 
         // 在边界框外侧标注总宽度和总高度
@@ -184,12 +200,7 @@ public class PdfExporter
         gfx.DrawLine(dimPen, maxX + 15, minY, maxX + 25, minY);
         gfx.DrawLine(dimPen, maxX + 15, maxY, maxX + 25, maxY);
         string heightLabel = $"{dieline.Bounds.Height:F1} mm";
-
-        // 旋转文字（垂直显示）
-        XGraphicsState state = gfx.Save();
-        gfx.RotateAtTransform(-90, new XPoint(maxX + 35, (minY + maxY) / 2));
-        gfx.DrawString(heightLabel, dimFont, dimBrush, maxX + 35, (minY + maxY) / 2);
-        gfx.Restore(state);
+        gfx.DrawString(heightLabel, dimFont, dimBrush, maxX + 30, (minY + maxY) / 2);
     }
 
     /// <summary>
@@ -197,22 +208,22 @@ public class PdfExporter
     /// </summary>
     private void DrawLegend(XGraphics gfx, double x, double y)
     {
-        XFont legendFont = new XFont("Arial", 9);
+        XFont legendFont = new XFont("Helvetica", 9, XFontStyleEx.Regular, new XPdfFontOptions(PdfFontEncoding.WinAnsi));
         XPen cutPen = new XPen(XColors.Black, 1);
         XPen foldPen = new XPen(XColors.Blue, 1);
         foldPen.DashStyle = XDashStyle.Dash;
 
-        gfx.DrawString("图例:", legendFont, XBrushes.Black, x, y);
+        gfx.DrawString("Legend:", legendFont, XBrushes.Black, x, y);
 
         gfx.DrawLine(cutPen, x, y + 15, x + 30, y + 15);
-        gfx.DrawString("切割线", legendFont, XBrushes.Black, x + 35, y + 18);
+        gfx.DrawString("Cut Line", legendFont, XBrushes.Black, x + 35, y + 18);
 
         gfx.DrawLine(foldPen, x, y + 30, x + 30, y + 30);
-        gfx.DrawString("折叠线", legendFont, XBrushes.Black, x + 35, y + 33);
+        gfx.DrawString("Fold Line", legendFont, XBrushes.Black, x + 35, y + 33);
 
         XBrush glueBrush = new XSolidBrush(XColor.FromArgb(100, 200, 200, 200));
         gfx.DrawRectangle(glueBrush, x, y + 40, 30, 10);
-        gfx.DrawString("粘合区", legendFont, XBrushes.Black, x + 35, y + 48);
+        gfx.DrawString("Glue Area", legendFont, XBrushes.Black, x + 35, y + 48);
     }
 
     /// <summary>

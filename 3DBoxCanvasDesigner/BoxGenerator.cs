@@ -1,10 +1,11 @@
 using PicoGK;
 using System.Numerics;
+using Leap71.ShapeKernel;
 
 namespace BoxCanvasDesigner;
 
 /// <summary>
-/// 盒型几何生成器
+/// 盒型几何生成器（使用ShapeKernel简化实现）
 /// </summary>
 public class BoxGenerator
 {
@@ -16,7 +17,7 @@ public class BoxGenerator
     }
 
     /// <summary>
-    /// 生成盒子的体素几何（实心壁面）
+    /// 生成盒子的体素几何（使用voxOffset创建空心壁面）
     /// </summary>
     public Voxels GenerateVoxels()
     {
@@ -25,223 +26,28 @@ public class BoxGenerator
         float H = _params.HeightMM;
         float wall = _params.WallThicknessMM;
 
-        Mesh mesh = new Mesh();
+        // 创建外部盒子（包含壁厚的完整尺寸）
+        LocalFrame oFrame = new LocalFrame(new Vector3(0, 0, H / 2), Vector3.UnitZ);
+        BaseBox oBox = new BaseBox(oFrame, L + 2 * wall, W + 2 * wall, H);
+        Voxels voxOuter = oBox.voxConstruct();
 
-        // 生成6个面的网格（每个面是实心壁板）
-        AddBottomPanel(ref mesh, L, W, wall);
-        AddTopPanel(ref mesh, L, W, H, wall);
-        AddFrontPanel(ref mesh, L, H, W, wall);
-        AddBackPanel(ref mesh, L, H, W, wall);
-        AddLeftPanel(ref mesh, W, H, L, wall);
-        AddRightPanel(ref mesh, W, H, L, wall);
+        // 使用voxOffset创建空心结构：外壳 - 内部 = 壁面
+        // voxOffset(-wall)会向内收缩wall的距离，得到内部空腔
+        Voxels voxInner = voxOuter.voxOffset(-wall);
+        Voxels voxWalls = voxOuter - voxInner;
 
-        return new Voxels(mesh);
+        return voxWalls;
     }
 
     /// <summary>
-    /// 底面板（Z=0平面，厚度向上）
-    /// </summary>
-    private void AddBottomPanel(ref Mesh mesh, float length, float width, float thickness)
-    {
-        float halfL = length / 2;
-        float halfW = width / 2;
-
-        // 外表面（Z=0）
-        Vector3 p0 = new Vector3(-halfL, -halfW, 0);
-        Vector3 p1 = new Vector3(halfL, -halfW, 0);
-        Vector3 p2 = new Vector3(halfL, halfW, 0);
-        Vector3 p3 = new Vector3(-halfL, halfW, 0);
-
-        // 内表面（Z=thickness）
-        Vector3 p4 = new Vector3(-halfL, -halfW, thickness);
-        Vector3 p5 = new Vector3(halfL, -halfW, thickness);
-        Vector3 p6 = new Vector3(halfL, halfW, thickness);
-        Vector3 p7 = new Vector3(-halfL, halfW, thickness);
-
-        // 外表面（朝下）
-        mesh.nAddTriangle(p0, p2, p1);
-        mesh.nAddTriangle(p0, p3, p2);
-
-        // 内表面（朝上）
-        mesh.nAddTriangle(p4, p5, p6);
-        mesh.nAddTriangle(p4, p6, p7);
-
-        // 四条边的侧面
-        AddQuad(ref mesh, p0, p1, p5, p4); // 前边
-        AddQuad(ref mesh, p1, p2, p6, p5); // 右边
-        AddQuad(ref mesh, p2, p3, p7, p6); // 后边
-        AddQuad(ref mesh, p3, p0, p4, p7); // 左边
-    }
-
-    /// <summary>
-    /// 顶面板（Z=H平面，厚度向下）
-    /// </summary>
-    private void AddTopPanel(ref Mesh mesh, float length, float width, float height, float thickness)
-    {
-        float halfL = length / 2;
-        float halfW = width / 2;
-
-        // 外表面（Z=height）
-        Vector3 p0 = new Vector3(-halfL, -halfW, height);
-        Vector3 p1 = new Vector3(halfL, -halfW, height);
-        Vector3 p2 = new Vector3(halfL, halfW, height);
-        Vector3 p3 = new Vector3(-halfL, halfW, height);
-
-        // 内表面（Z=height-thickness）
-        Vector3 p4 = new Vector3(-halfL, -halfW, height - thickness);
-        Vector3 p5 = new Vector3(halfL, -halfW, height - thickness);
-        Vector3 p6 = new Vector3(halfL, halfW, height - thickness);
-        Vector3 p7 = new Vector3(-halfL, halfW, height - thickness);
-
-        // 外表面（朝上）
-        mesh.nAddTriangle(p0, p1, p2);
-        mesh.nAddTriangle(p0, p2, p3);
-
-        // 内表面（朝下）
-        mesh.nAddTriangle(p4, p6, p5);
-        mesh.nAddTriangle(p4, p7, p6);
-
-        // 四条边的侧面
-        AddQuad(ref mesh, p0, p4, p5, p1);
-        AddQuad(ref mesh, p1, p5, p6, p2);
-        AddQuad(ref mesh, p2, p6, p7, p3);
-        AddQuad(ref mesh, p3, p7, p4, p0);
-    }
-
-    /// <summary>
-    /// 前面板（Y=-W/2平面，厚度向内）
-    /// </summary>
-    private void AddFrontPanel(ref Mesh mesh, float length, float height, float width, float thickness)
-    {
-        float halfL = length / 2;
-        float halfW = width / 2;
-
-        // 外表面
-        Vector3 p0 = new Vector3(-halfL, -halfW, 0);
-        Vector3 p1 = new Vector3(halfL, -halfW, 0);
-        Vector3 p2 = new Vector3(halfL, -halfW, height);
-        Vector3 p3 = new Vector3(-halfL, -halfW, height);
-
-        // 内表面
-        Vector3 p4 = new Vector3(-halfL, -halfW + thickness, 0);
-        Vector3 p5 = new Vector3(halfL, -halfW + thickness, 0);
-        Vector3 p6 = new Vector3(halfL, -halfW + thickness, height);
-        Vector3 p7 = new Vector3(-halfL, -halfW + thickness, height);
-
-        // 外表面（朝外）
-        mesh.nAddTriangle(p0, p1, p2);
-        mesh.nAddTriangle(p0, p2, p3);
-
-        // 内表面（朝内）
-        mesh.nAddTriangle(p4, p6, p5);
-        mesh.nAddTriangle(p4, p7, p6);
-
-        // 四条边
-        AddQuad(ref mesh, p0, p4, p7, p3);
-        AddQuad(ref mesh, p1, p2, p6, p5);
-        AddQuad(ref mesh, p0, p3, p2, p1); // 底边（已被底面板覆盖，但为了封闭性）
-        AddQuad(ref mesh, p4, p5, p6, p7); // 顶边
-    }
-
-    /// <summary>
-    /// 后面板（Y=W/2平面，厚度向内）
-    /// </summary>
-    private void AddBackPanel(ref Mesh mesh, float length, float height, float width, float thickness)
-    {
-        float halfL = length / 2;
-        float halfW = width / 2;
-
-        Vector3 p0 = new Vector3(-halfL, halfW, 0);
-        Vector3 p1 = new Vector3(halfL, halfW, 0);
-        Vector3 p2 = new Vector3(halfL, halfW, height);
-        Vector3 p3 = new Vector3(-halfL, halfW, height);
-
-        Vector3 p4 = new Vector3(-halfL, halfW - thickness, 0);
-        Vector3 p5 = new Vector3(halfL, halfW - thickness, 0);
-        Vector3 p6 = new Vector3(halfL, halfW - thickness, height);
-        Vector3 p7 = new Vector3(-halfL, halfW - thickness, height);
-
-        mesh.nAddTriangle(p0, p2, p1);
-        mesh.nAddTriangle(p0, p3, p2);
-
-        mesh.nAddTriangle(p4, p5, p6);
-        mesh.nAddTriangle(p4, p6, p7);
-
-        AddQuad(ref mesh, p0, p3, p7, p4);
-        AddQuad(ref mesh, p1, p5, p6, p2);
-    }
-
-    /// <summary>
-    /// 左面板（X=-L/2平面，厚度向内）
-    /// </summary>
-    private void AddLeftPanel(ref Mesh mesh, float width, float height, float length, float thickness)
-    {
-        float halfL = length / 2;
-        float halfW = width / 2;
-
-        Vector3 p0 = new Vector3(-halfL, -halfW, 0);
-        Vector3 p1 = new Vector3(-halfL, halfW, 0);
-        Vector3 p2 = new Vector3(-halfL, halfW, height);
-        Vector3 p3 = new Vector3(-halfL, -halfW, height);
-
-        Vector3 p4 = new Vector3(-halfL + thickness, -halfW, 0);
-        Vector3 p5 = new Vector3(-halfL + thickness, halfW, 0);
-        Vector3 p6 = new Vector3(-halfL + thickness, halfW, height);
-        Vector3 p7 = new Vector3(-halfL + thickness, -halfW, height);
-
-        mesh.nAddTriangle(p0, p2, p1);
-        mesh.nAddTriangle(p0, p3, p2);
-
-        mesh.nAddTriangle(p4, p5, p6);
-        mesh.nAddTriangle(p4, p6, p7);
-    }
-
-    /// <summary>
-    /// 右面板（X=L/2平面，厚度向内）
-    /// </summary>
-    private void AddRightPanel(ref Mesh mesh, float width, float height, float length, float thickness)
-    {
-        float halfL = length / 2;
-        float halfW = width / 2;
-
-        Vector3 p0 = new Vector3(halfL, -halfW, 0);
-        Vector3 p1 = new Vector3(halfL, halfW, 0);
-        Vector3 p2 = new Vector3(halfL, halfW, height);
-        Vector3 p3 = new Vector3(halfL, -halfW, height);
-
-        Vector3 p4 = new Vector3(halfL - thickness, -halfW, 0);
-        Vector3 p5 = new Vector3(halfL - thickness, halfW, 0);
-        Vector3 p6 = new Vector3(halfL - thickness, halfW, height);
-        Vector3 p7 = new Vector3(halfL - thickness, -halfW, height);
-
-        mesh.nAddTriangle(p0, p1, p2);
-        mesh.nAddTriangle(p0, p2, p3);
-
-        mesh.nAddTriangle(p4, p6, p5);
-        mesh.nAddTriangle(p4, p7, p6);
-    }
-
-    /// <summary>
-    /// 添加四边形（两个三角形）
-    /// </summary>
-    private void AddQuad(ref Mesh mesh, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
-    {
-        mesh.nAddTriangle(p0, p1, p2);
-        mesh.nAddTriangle(p0, p2, p3);
-    }
-
-    /// <summary>
-    /// 预览盒子（添加到PicoGK查看器）
+    /// 预览盒子（使用ShapeKernel的预览方法）
     /// </summary>
     public void Preview()
     {
         try
         {
-            // 设置材质颜色
-            Library.oViewer().SetGroupMaterial(0, "FF6B35", 0.0f, 1.0f); // 橙色
-
             Voxels voxBox = GenerateVoxels();
-            Library.oViewer().Add(voxBox);
+            Sh.PreviewVoxels(voxBox, Cp.clrWarning); // 橙色
 
             string typeStr = _params.Type switch
             {
