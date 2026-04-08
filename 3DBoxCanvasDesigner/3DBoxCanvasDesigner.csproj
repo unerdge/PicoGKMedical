@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="PicoGK" Version="1.7.7.4" />
+    <PackageReference Include="PdfSharp" Version="6.2.0" />
   </ItemGroup>
 
 </Project>
