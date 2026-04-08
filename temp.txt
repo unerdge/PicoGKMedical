@@ -1,0 +1,1 @@
+请按照E:\desktop_files\workplace\vscode\Csharp\LEAP71\PicoGKMedical\ProblemFiles\3D盒型画布设计器-功能分析与需求规格.txt，将所有的需求进行梳理，并按照其需求生成代码
