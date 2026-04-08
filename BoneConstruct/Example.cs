@@ -8,27 +8,27 @@ namespace BoneConstruct
     {
         public static void PreviewBoxRun()
         {
-            BaseBox oBox1           = new BaseBox(new LocalFrame(), 10, 10, 10);
-            BaseBox oBox2           = new BaseBox(new LocalFrame(), -10, 10, 10);
-            Sh.PreviewBoxWireframe(         oBox1,      Cp.clrRed);
-            Sh.PreviewBoxWireframe(         oBox2,      Cp.clrBlack);
+            BaseCylinder oCylinder = new BaseCylinder(new LocalFrame(new Vector3(0, 0, 0), Vector3.UnitY));
+            Voxels oVoxels=oCylinder.voxConstruct();
+            oVoxels = oVoxels.voxOffset(1f)-oVoxels;
+            Sh.PreviewVoxels(oVoxels, Cp.clrBlue);
             Console.WriteLine("Inner Box Created.");
             // Console.ReadKey();
         }
         public static void Run(float resolutionRatio = 0.2f)
         {
-#pragma warning disable CS0219 // 变量已被赋值，但从未使用过它的值
             string strOutputFolder = "E:/desktop_files/workplace/vscode/Csharp/LEAP71/PicoGKMedical/BoneConstruct/log";
-#pragma warning restore CS0219 // 变量已被赋值，但从未使用过它的值
 
             try
             {
                 // PicoGK.Library.Go(
                 //     resolutionRatio,
-                //     Leap71.CoolCube.HelixHeatX.Task);
+                //     Leap71.CoolCube.HelixHeatX.Task,
+                //     strOutputFolder);
                 PicoGK.Library.Go(
-                    resolutionRatio,
-                    PreviewBoxRun
+                    0.2f,
+                    PreviewBoxRun,
+                    strOutputFolder+"/PreviewBoxRun"
                     );
             }
             catch (Exception e)
