@@ -5,3 +5,4 @@
 # But keep runtime files
 !**/bin/runtime/
 !**/bin/runtime/**
+BoneConstruct/log/PicoGK.log
