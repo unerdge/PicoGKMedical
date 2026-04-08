@@ -17,6 +17,9 @@ public class DielineGenerator
             BoxType.TuckEnd => GenerateTuckEndDieline(parameters),
             BoxType.Mailer => GenerateMailerDieline(parameters),
             BoxType.CorrugatedRSC => GenerateCorrugatedRSCDieline(parameters),
+            BoxType.AutoLockBottom => GenerateAutoLockBottomDieline(parameters),
+            BoxType.PillowBox => GeneratePillowBoxDieline(parameters),
+            BoxType.RigidBox => GenerateRigidBoxDieline(parameters),
             _ => throw new NotImplementedException($"盒型 {parameters.Type} 的刀版生成尚未实现")
         };
     }
@@ -225,6 +228,172 @@ public class DielineGenerator
         var topFlapBack = CreateRectPanel("TopFlapBack", PanelType.Flap,
             currentX + W + L + W, currentY, L, flapLength);
         dieline.Panels.Add(topFlapBack);
+
+        GenerateLinesFromPanels(dieline);
+        dieline.Bounds = CalculateBounds(dieline);
+
+        return dieline;
+    }
+
+    /// <summary>
+    /// 生成自动锁底盒刀版
+    /// </summary>
+    private DielineData GenerateAutoLockBottomDieline(BoxParameters p)
+    {
+        var dieline = new DielineData();
+        float L = p.LengthMM;
+        float W = p.WidthMM;
+        float H = p.HeightMM;
+        float flapDepth = H * 0.6f;
+        float lockWingDepth = W * 0.5f; // 锁扣翼板深度
+
+        // 布局：一字形展开，底部有4个自动锁扣翼板
+        float currentX = 0;
+        float currentY = lockWingDepth;
+
+        // 底部自动锁扣翼板（4个）
+        var bottomWingLeft = CreateRectPanel("BottomWingLeft", PanelType.Flap,
+            currentX, 0, W, lockWingDepth);
+        dieline.Panels.Add(bottomWingLeft);
+
+        var bottomWingFront = CreateRectPanel("BottomWingFront", PanelType.Flap,
+            currentX + W, 0, L, lockWingDepth);
+        dieline.Panels.Add(bottomWingFront);
+
+        var bottomWingRight = CreateRectPanel("BottomWingRight", PanelType.Flap,
+            currentX + W + L, 0, W, lockWingDepth);
+        dieline.Panels.Add(bottomWingRight);
+
+        var bottomWingBack = CreateRectPanel("BottomWingBack", PanelType.Flap,
+            currentX + W + L + W, 0, L, lockWingDepth);
+        dieline.Panels.Add(bottomWingBack);
+
+        // 主体侧面
+        var leftPanel = CreateRectPanel("Left", PanelType.Left,
+            currentX, currentY, W, H);
+        dieline.Panels.Add(leftPanel);
+
+        var frontPanel = CreateRectPanel("Front", PanelType.Front,
+            currentX + W, currentY, L, H);
+        dieline.Panels.Add(frontPanel);
+
+        var rightPanel = CreateRectPanel("Right", PanelType.Right,
+            currentX + W + L, currentY, W, H);
+        dieline.Panels.Add(rightPanel);
+
+        var backPanel = CreateRectPanel("Back", PanelType.Back,
+            currentX + W + L + W, currentY, L, H);
+        dieline.Panels.Add(backPanel);
+
+        currentY += H;
+
+        // 顶部翻盖
+        var topFlapFront = CreateRectPanel("TopFlapFront", PanelType.Flap,
+            currentX + W, currentY, L, flapDepth);
+        dieline.Panels.Add(topFlapFront);
+
+        GenerateLinesFromPanels(dieline);
+        dieline.Bounds = CalculateBounds(dieline);
+
+        return dieline;
+    }
+
+    /// <summary>
+    /// 生成枕头盒刀版（简化版：矩形面板，实际应有弧形边）
+    /// </summary>
+    private DielineData GeneratePillowBoxDieline(BoxParameters p)
+    {
+        var dieline = new DielineData();
+        float L = p.LengthMM;
+        float W = p.WidthMM;
+        float H = p.HeightMM;
+        float curveDepth = W * 0.3f; // 弧形深度
+
+        // 枕头盒布局：中心主体 + 两端弧形封口
+        float currentX = curveDepth;
+        float currentY = 0;
+
+        // 左端弧形封口（简化为矩形）
+        var leftCurve = CreateRectPanel("LeftCurve", PanelType.Flap,
+            0, currentY, curveDepth, H);
+        dieline.Panels.Add(leftCurve);
+
+        // 主体面板
+        var bodyPanel = CreateRectPanel("Body", PanelType.Front,
+            currentX, currentY, L, H);
+        dieline.Panels.Add(bodyPanel);
+
+        // 右端弧形封口（简化为矩形）
+        var rightCurve = CreateRectPanel("RightCurve", PanelType.Flap,
+            currentX + L, currentY, curveDepth, H);
+        dieline.Panels.Add(rightCurve);
+
+        GenerateLinesFromPanels(dieline);
+        dieline.Bounds = CalculateBounds(dieline);
+
+        return dieline;
+    }
+
+    /// <summary>
+    /// 生成天地盖精装盒刀版（两件式：盒盖+盒底）
+    /// </summary>
+    private DielineData GenerateRigidBoxDieline(BoxParameters p)
+    {
+        var dieline = new DielineData();
+        float L = p.LengthMM;
+        float W = p.WidthMM;
+        float H = p.HeightMM;
+        float lidHeight = H * 0.4f;  // 盒盖高度
+        float baseHeight = H * 0.6f; // 盒底高度
+        float gap = 20f; // 盒盖和盒底之间的间距
+
+        // 盒底部分（左侧）
+        float baseX = 0;
+        float baseY = 0;
+
+        var baseBottom = CreateRectPanel("BaseBottom", PanelType.Bottom,
+            baseX + W, baseY + baseHeight, L, W);
+        dieline.Panels.Add(baseBottom);
+
+        var baseFront = CreateRectPanel("BaseFront", PanelType.Front,
+            baseX + W, baseY, L, baseHeight);
+        dieline.Panels.Add(baseFront);
+
+        var baseBack = CreateRectPanel("BaseBack", PanelType.Back,
+            baseX + W, baseY + baseHeight + W, L, baseHeight);
+        dieline.Panels.Add(baseBack);
+
+        var baseLeft = CreateRectPanel("BaseLeft", PanelType.Left,
+            baseX, baseY + baseHeight, W, W);
+        dieline.Panels.Add(baseLeft);
+
+        var baseRight = CreateRectPanel("BaseRight", PanelType.Right,
+            baseX + W + L, baseY + baseHeight, W, W);
+        dieline.Panels.Add(baseRight);
+
+        // 盒盖部分（右侧）
+        float lidX = baseX + W + L + W + gap;
+        float lidY = 0;
+
+        var lidTop = CreateRectPanel("LidTop", PanelType.Bottom,
+            lidX + W, lidY + lidHeight, L, W);
+        dieline.Panels.Add(lidTop);
+
+        var lidFront = CreateRectPanel("LidFront", PanelType.Front,
+            lidX + W, lidY, L, lidHeight);
+        dieline.Panels.Add(lidFront);
+
+        var lidBack = CreateRectPanel("LidBack", PanelType.Back,
+            lidX + W, lidY + lidHeight + W, L, lidHeight);
+        dieline.Panels.Add(lidBack);
+
+        var lidLeft = CreateRectPanel("LidLeft", PanelType.Left,
+            lidX, lidY + lidHeight, W, W);
+        dieline.Panels.Add(lidLeft);
+
+        var lidRight = CreateRectPanel("LidRight", PanelType.Right,
+            lidX + W + L, lidY + lidHeight, W, W);
+        dieline.Panels.Add(lidRight);
 
         GenerateLinesFromPanels(dieline);
         dieline.Bounds = CalculateBounds(dieline);

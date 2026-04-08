@@ -157,29 +157,64 @@ Library.oViewer().SetGroupMaterial(iNextGroupId, clr, fMetallic, fRoughness);
 
 ### PDF Export with PdfSharp 6.x
 
+**MANDATORY:** Before using PdfSharp APIs, consult the source code or documentation:
+- GitHub: https://github.com/empira/PDFsharp
+- Documentation: https://docs.pdfsharp.net/
+- Local NuGet cache: `C:\Users\unerdge\.nuget\packages\pdfsharp\6.2.0\`
+
+**DO NOT assume API behavior.** PdfSharp 6.x has breaking changes from earlier versions:
+1. Font handling requires IFontResolver implementation
+2. XUnit implicit conversions are obsolete (use .Point, .Millimeter explicitly)
+3. PDF standard fonts need XPdfFontOptions(PdfFontEncoding.WinAnsi)
+
 **Font handling:**
-- PdfSharp 6.x does NOT support system fonts directly
+- PdfSharp 6.x REQUIRES a FontResolver for all fonts (even built-in PDF fonts)
+- Must implement IFontResolver and register via GlobalFontSettings.FontResolver
 - Use built-in PDF fonts: `"Helvetica"`, `"Times-Roman"`, `"Courier"`
-- DO NOT use `"Arial"` or other system font names
+- DO NOT use `"Arial"` or other system font names without proper font resolver
 
 **Correct usage:**
 ```csharp
-XFont font = new XFont("Helvetica", 12);
-XFont boldFont = new XFont("Helvetica", 14, XFontStyleEx.Bold);
+// Register font resolver once at startup
+if (GlobalFontSettings.FontResolver == null)
+{
+    GlobalFontSettings.FontResolver = new PdfFontResolver();
+}
+
+// Create fonts with PDF encoding
+XFont font = new XFont("Helvetica", 12, XFontStyleEx.Regular, 
+    new XPdfFontOptions(PdfFontEncoding.WinAnsi));
+XFont boldFont = new XFont("Helvetica", 14, XFontStyleEx.Bold,
+    new XPdfFontOptions(PdfFontEncoding.WinAnsi));
 ```
 
 **WRONG usage:**
 ```csharp
-// ❌ Will throw NullReferenceException
+// ❌ Will throw "No appropriate font found" exception
+XFont font = new XFont("Helvetica", 12);  // Missing XPdfFontOptions
+
+// ❌ Will throw NullReferenceException if FontResolver not registered
 XFont font = new XFont("Arial", 12);
+```
+
+**XUnit usage:**
+```csharp
+// ✅ Correct - explicit property access
+double x = page.Width.Point;
+double y = page.Height.Millimeter;
+
+// ❌ Obsolete - implicit conversion
+double x = page.Width - 150;  // Warning CS0618
 ```
 
 ### Common Pitfalls
 
 1. **Assuming string colors work** - Always use `ColorFloat`
 2. **Confusing roughness with transparency** - Check parameter order
-3. **Using system font names in PDF** - Use Helvetica/Times/Courier
-4. **Not checking PicoGK source** - Always verify API before use
+3. **Using system font names in PDF without FontResolver** - Must implement IFontResolver
+4. **Not using XPdfFontOptions for PDF fonts** - Required in PdfSharp 6.x
+5. **Not checking PicoGK source** - Always verify API before use
+6. **Not checking PdfSharp documentation** - API changed significantly in 6.x
 
 ### Testing Requirements
 
@@ -206,11 +241,11 @@ After modifying PicoGK-related code:
 ```
 
 ### Current Implementation Status
-- ✅ 3 box types: TuckEnd, Mailer, CorrugatedRSC
-- ✅ Real wall thickness (Mesh-based, not wireframe)
-- ✅ 2D dieline generation
-- ✅ PDF export with dimensions and legends
-- ✅ Transparent 3D preview (60% opacity)
+- ✅ 6 box types: TuckEnd, Mailer, CorrugatedRSC, AutoLockBottom, PillowBox, RigidBox
+- ✅ Real wall thickness (using ShapeKernel BaseBox + voxOffset)
+- ✅ 2D dieline generation for all 6 types
+- ✅ PDF export with FontResolver implementation
+- ✅ Transparent 3D preview using Sh.PreviewVoxels
 
 ### Development Roadmap
 See: `ProblemFiles/report/3_开发进度报告.md`

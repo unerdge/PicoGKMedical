@@ -17,6 +17,12 @@ public class PdfExporter
     /// </summary>
     public void ExportDieline(DielineData dieline, string filePath, BoxParameters parameters)
     {
+        // 注册字体解析器（只需注册一次）
+        if (PdfSharp.Fonts.GlobalFontSettings.FontResolver == null)
+        {
+            PdfSharp.Fonts.GlobalFontSettings.FontResolver = new PdfFontResolver();
+        }
+
         // 创建PDF文档
         PdfDocument document = new PdfDocument();
         document.Info.Title = $"刀版 - {parameters.Type}";
@@ -236,6 +242,9 @@ public class PdfExporter
             BoxType.TuckEnd => "插口盒",
             BoxType.Mailer => "邮寄盒/飞机盒",
             BoxType.CorrugatedRSC => "瓦楞标准开槽箱",
+            BoxType.AutoLockBottom => "自动锁底盒",
+            BoxType.PillowBox => "枕头盒",
+            BoxType.RigidBox => "天地盖精装盒",
             _ => type.ToString()
         };
     }

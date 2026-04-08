@@ -115,12 +115,15 @@ class Example
         {
             Console.WriteLine("\n=== 刀版导出测试 ===\n");
 
-            // 测试3种盒型
+            // 测试6种盒型
             var testCases = new[]
             {
                 new BoxParameters(BoxType.TuckEnd, 100, 80, 120, 2.0f),
                 new BoxParameters(BoxType.Mailer, 220, 150, 80, 3.0f),
-                new BoxParameters(BoxType.CorrugatedRSC, 300, 200, 150, 5.0f)
+                new BoxParameters(BoxType.CorrugatedRSC, 300, 200, 150, 5.0f),
+                new BoxParameters(BoxType.AutoLockBottom, 150, 100, 100, 2.5f),
+                new BoxParameters(BoxType.PillowBox, 120, 80, 60, 2.0f),
+                new BoxParameters(BoxType.RigidBox, 200, 150, 80, 3.0f)
             };
 
             var generator = new DielineGenerator();

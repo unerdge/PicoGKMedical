@@ -12,7 +12,16 @@ public enum BoxType
     Mailer,
 
     /// <summary>瓦楞标准开槽箱（Regular Slotted Container）</summary>
-    CorrugatedRSC
+    CorrugatedRSC,
+
+    /// <summary>自动锁底盒（Auto Lock Bottom Box）</summary>
+    AutoLockBottom,
+
+    /// <summary>枕头盒（Pillow Box）</summary>
+    PillowBox,
+
+    /// <summary>天地盖精装盒（Rigid Box / Lid and Base）</summary>
+    RigidBox
 }
 
 /// <summary>

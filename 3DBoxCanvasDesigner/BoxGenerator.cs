@@ -54,6 +54,9 @@ public class BoxGenerator
                 BoxType.TuckEnd => "插舌式盒",
                 BoxType.Mailer => "邮寄盒",
                 BoxType.CorrugatedRSC => "瓦楞标准开槽箱",
+                BoxType.AutoLockBottom => "自动锁底盒",
+                BoxType.PillowBox => "枕头盒",
+                BoxType.RigidBox => "天地盖精装盒",
                 _ => "未知类型"
             };
 
