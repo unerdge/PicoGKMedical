@@ -85,7 +85,27 @@ class Program
     /// </summary>
     static void Run3DPreview()
     {
-        Library.Go(0.5f, Example.Run3DPreview);
+        Console.WriteLine("\n=== 3D预览模式 ===");
+        Console.WriteLine("选择盒型:");
+        Console.WriteLine("  1. 插舌式盒 (TuckEnd)           100 x  80 x 120 mm  壁厚 2.0 mm");
+        Console.WriteLine("  2. 邮寄盒 (Mailer)              220 x 150 x  80 mm  壁厚 3.0 mm");
+        Console.WriteLine("  3. 瓦楞标准开槽箱 (RSC)         300 x 200 x 150 mm  壁厚 5.0 mm");
+        Console.WriteLine("  4. 自动锁底盒 (AutoLockBottom)  150 x 100 x 100 mm  壁厚 2.5 mm");
+        Console.WriteLine("  5. 枕头盒 (PillowBox)           120 x  80 x  60 mm  壁厚 2.0 mm");
+        Console.WriteLine("  6. 天地盖精装盒 (RigidBox)      200 x 150 x  80 mm  壁厚 3.0 mm");
+        Console.Write("请选择 (1-6, 默认2): ");
+
+        BoxParameters parameters = Console.ReadLine()?.Trim() switch
+        {
+            "1" => new BoxParameters(BoxType.TuckEnd,        100,  80, 120, 2.0f),
+            "3" => new BoxParameters(BoxType.CorrugatedRSC,  300, 200, 150, 5.0f),
+            "4" => new BoxParameters(BoxType.AutoLockBottom, 150, 100, 100, 2.5f),
+            "5" => new BoxParameters(BoxType.PillowBox,      120,  80,  60, 2.0f),
+            "6" => new BoxParameters(BoxType.RigidBox,       200, 150,  80, 3.0f),
+            _   => new BoxParameters(BoxType.Mailer,         220, 150,  80, 3.0f)
+        };
+
+        Library.Go(0.5f, () => Example.Run3DPreview(parameters));
     }
 
     /// <summary>
@@ -104,10 +124,10 @@ class Program
         // 先导出刀版
         Example.RunDielineExport();
 
-        // 再显示3D预览
+        // 再选择盒型显示3D预览
         Console.WriteLine("\n按任意键继续查看3D预览...");
         Console.ReadKey();
-        Library.Go(0.5f, Example.Run3DPreview);
+        Run3DPreview();
     }
 }
 
@@ -116,22 +136,12 @@ class Example
     /// <summary>
     /// 3D预览
     /// </summary>
-    public static void Run3DPreview()
+    public static void Run3DPreview(BoxParameters parameters)
     {
         try
         {
-            Library.oViewer().SetGroupMaterial(0, "FF6B35", 0.0f, 1.0f); // 橙色
+            Library.oViewer().SetGroupMaterial(0, new PicoGK.ColorFloat("FF6B35FF"), 0.0f, 0.8f);
 
-            // 创建盒型参数 - 邮寄盒示例
-            var parameters = new BoxParameters(
-                Type: BoxType.Mailer,
-                LengthMM: 220,
-                WidthMM: 150,
-                HeightMM: 80,
-                WallThicknessMM: 3.0f
-            );
-
-            // 生成并预览盒子
             var generator = new BoxGenerator(parameters);
             generator.Preview();
 
