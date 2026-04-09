@@ -21,6 +21,21 @@ public class BoxGenerator
     /// </summary>
     public Voxels GenerateVoxels()
     {
+        // RigidBox是两件式，需要特殊处理
+        if (_params.Type == BoxType.RigidBox)
+        {
+            return GenerateRigidBoxVoxels();
+        }
+
+        // 其他盒型都是标准矩形盒子
+        return GenerateStandardBoxVoxels();
+    }
+
+    /// <summary>
+    /// 生成标准矩形盒子
+    /// </summary>
+    private Voxels GenerateStandardBoxVoxels()
+    {
         float L = _params.LengthMM;
         float W = _params.WidthMM;
         float H = _params.HeightMM;
@@ -37,6 +52,38 @@ public class BoxGenerator
         Voxels voxWalls = voxOuter - voxInner;
 
         return voxWalls;
+    }
+
+    /// <summary>
+    /// 生成天地盖精装盒（两件式：盒盖+盒底）
+    /// </summary>
+    private Voxels GenerateRigidBoxVoxels()
+    {
+        float L = _params.LengthMM;
+        float W = _params.WidthMM;
+        float H = _params.HeightMM;
+        float wall = _params.WallThicknessMM;
+
+        float lidHeight = H * 0.4f;  // 盒盖高度
+        float baseHeight = H * 0.6f; // 盒底高度
+        float gap = 30f; // 盒盖和盒底之间的间距
+
+        // 生成盒底（左侧）
+        LocalFrame baseFrame = new LocalFrame(new Vector3(-gap / 2 - L / 2, 0, baseHeight / 2), Vector3.UnitZ);
+        BaseBox baseBox = new BaseBox(baseFrame, L + 2 * wall, W + 2 * wall, baseHeight);
+        Voxels voxBaseOuter = baseBox.voxConstruct();
+        Voxels voxBaseInner = voxBaseOuter.voxOffset(-wall);
+        Voxels voxBase = voxBaseOuter - voxBaseInner;
+
+        // 生成盒盖（右侧）
+        LocalFrame lidFrame = new LocalFrame(new Vector3(gap / 2 + L / 2, 0, lidHeight / 2), Vector3.UnitZ);
+        BaseBox lidBox = new BaseBox(lidFrame, L + 2 * wall, W + 2 * wall, lidHeight);
+        Voxels voxLidOuter = lidBox.voxConstruct();
+        Voxels voxLidInner = voxLidOuter.voxOffset(-wall);
+        Voxels voxLid = voxLidOuter - voxLidInner;
+
+        // 合并盒底和盒盖
+        return voxBase + voxLid;
     }
 
     /// <summary>

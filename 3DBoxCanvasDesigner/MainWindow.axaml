@@ -1,0 +1,69 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="BoxCanvasDesigner.MainWindow"
+        Title="3D盒型画布设计器"
+        Width="600" Height="500"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Margin="20" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*,Auto">
+
+        <!-- 标题 -->
+        <TextBlock Grid.Row="0" Text="3D盒型画布设计器"
+                   FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+
+        <!-- 盒型选择 -->
+        <StackPanel Grid.Row="1" Margin="0,0,0,15">
+            <TextBlock Text="盒型类型:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+            <ComboBox Name="BoxTypeComboBox" SelectedIndex="0" Width="250" HorizontalAlignment="Left">
+                <ComboBoxItem Content="插舌式盒 (TuckEnd)"/>
+                <ComboBoxItem Content="邮寄盒 (Mailer)"/>
+                <ComboBoxItem Content="瓦楞标准开槽箱 (CorrugatedRSC)"/>
+                <ComboBoxItem Content="自动锁底盒 (AutoLockBottom)"/>
+                <ComboBoxItem Content="枕头盒 (PillowBox)"/>
+                <ComboBoxItem Content="天地盖精装盒 (RigidBox)"/>
+            </ComboBox>
+        </StackPanel>
+
+        <!-- 尺寸输入 -->
+        <Grid Grid.Row="2" ColumnDefinitions="*,*,*" Margin="0,0,0,15">
+            <StackPanel Grid.Column="0" Margin="0,0,7,0">
+                <TextBlock Text="长度 (mm):" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <TextBox Name="LengthTextBox" Text="150" Watermark="长度"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Margin="7,0,7,0">
+                <TextBlock Text="宽度 (mm):" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <TextBox Name="WidthTextBox" Text="100" Watermark="宽度"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Margin="7,0,0,0">
+                <TextBlock Text="高度 (mm):" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <TextBox Name="HeightTextBox" Text="80" Watermark="高度"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- 壁厚输入 -->
+        <StackPanel Grid.Row="3" Margin="0,0,0,20">
+            <TextBlock Text="壁厚 (mm):" FontWeight="SemiBold" Margin="0,0,0,5"/>
+            <TextBox Name="WallThicknessTextBox" Text="2.5" Width="150" HorizontalAlignment="Left" Watermark="壁厚"/>
+        </StackPanel>
+
+        <!-- 操作按钮 -->
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="10" Margin="0,0,0,20">
+            <Button Name="Preview3DButton" Content="3D预览" Width="120" Height="40" Click="OnPreview3DClick"/>
+            <Button Name="ExportPdfButton" Content="导出PDF" Width="120" Height="40" Click="OnExportPdfClick"/>
+            <Button Name="ExportAllButton" Content="导出所有盒型" Width="140" Height="40" Click="OnExportAllClick"/>
+        </StackPanel>
+
+        <!-- 状态信息 -->
+        <Border Grid.Row="6" BorderBrush="LightGray" BorderThickness="1"
+                CornerRadius="5" Padding="10" Background="#F5F5F5">
+            <ScrollViewer>
+                <TextBlock Name="StatusTextBlock" Text="就绪" TextWrapping="Wrap" FontFamily="Consolas"/>
+            </ScrollViewer>
+        </Border>
+
+        <!-- 底部信息 -->
+        <TextBlock Grid.Row="7" Text="基于 PicoGK 1.7.7.4 + PdfSharp 6.2.0"
+                   FontSize="11" Foreground="Gray" Margin="0,10,0,0" HorizontalAlignment="Center"/>
+    </Grid>
+
+</Window>

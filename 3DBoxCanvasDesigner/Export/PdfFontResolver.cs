@@ -9,9 +9,28 @@ public class PdfFontResolver : IFontResolver
 {
     public byte[]? GetFont(string faceName)
     {
-        // 对于PDF内置字体，返回null表示使用PDF的14种标准字体
-        // 这些字体不需要嵌入到PDF中
-        return null;
+        // PdfSharp 6.x requires actual font bytes — returning null causes NullReferenceException.
+        // Map PDF standard font names to Windows system fonts (Arial ≈ Helvetica substitute).
+        string fontsFolder = Environment.GetFolderPath(Environment.SpecialFolder.Fonts);
+
+        string fileName = faceName switch
+        {
+            "Helvetica-Bold"        => "arialbd.ttf",
+            "Helvetica-Oblique"     => "ariali.ttf",
+            "Helvetica-BoldOblique" => "arialbi.ttf",
+            "Times-Roman"           => "times.ttf",
+            "Times-Bold"            => "timesbd.ttf",
+            "Times-Italic"          => "timesi.ttf",
+            "Times-BoldItalic"      => "timesbi.ttf",
+            "Courier"               => "cour.ttf",
+            "Courier-Bold"          => "courbd.ttf",
+            "Courier-Oblique"       => "couri.ttf",
+            "Courier-BoldOblique"   => "courbi.ttf",
+            _                       => "arial.ttf"  // Helvetica -> Arial
+        };
+
+        string fontPath = Path.Combine(fontsFolder, fileName);
+        return File.Exists(fontPath) ? File.ReadAllBytes(fontPath) : null;
     }
 
     public FontResolverInfo? ResolveTypeface(string familyName, bool isBold, bool isItalic)

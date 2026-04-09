@@ -1,13 +1,46 @@
+using Avalonia;
 using PicoGK;
 using BoxCanvasDesigner.Dieline;
 using BoxCanvasDesigner.Export;
+using BoxCanvasDesigner.Examples;
 
 namespace BoxCanvasDesigner;
 
 class Program
 {
+    // Avalonia configuration, don't remove; also used by visual designer.
+    public static AppBuilder BuildAvaloniaApp()
+        => AppBuilder.Configure<App>()
+            .UsePlatformDetect()
+            .WithInterFont()
+            .LogToTrace();
+
+    // Initialization code. Don't use any Avalonia, third-party APIs or any
+    // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
+    // yet and stuff might break.
+    [STAThread]
     static void Main(string[] args)
     {
+        // 如果有命令行参数，使用旧的控制台模式
+        RunConsoleMode();
+        // if (args.Length > 0 && args[0] == "--console")
+        // {
+        //     RunConsoleMode();
+        // }
+        // else
+        // {
+        //     // 启动GUI模式
+        //     BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+        // }
+    }
+
+    /// <summary>
+    /// 控制台模式（保留原有功能）
+    /// </summary>
+    static void RunConsoleMode()
+    {
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        Console.InputEncoding = System.Text.Encoding.UTF8;
         try
         {
             // 测试模式选择
@@ -15,7 +48,8 @@ class Program
             Console.WriteLine("1. 3D预览模式");
             Console.WriteLine("2. 刀版导出模式");
             Console.WriteLine("3. 完整测试（3D + 刀版）");
-            Console.Write("请选择模式 (1-3): ");
+            Console.WriteLine("4. 物理引擎演示");
+            Console.Write("请选择模式 (1-4): ");
 
             string? choice = Console.ReadLine();
 
@@ -30,9 +64,12 @@ class Program
                 case "3":
                     RunFullTest();
                     break;
+                case "4":
+                    PhysicsEngineDemo.RunDemo();
+                    break;
                 default:
-                    Console.WriteLine("无效选择，运行完整测试");
-                    RunFullTest();
+                    Console.WriteLine("无效选择，运行物理引擎演示");
+                    PhysicsEngineDemo.RunDemo();
                     break;
             }
         }
@@ -143,8 +180,12 @@ class Example
                 Console.WriteLine($"  总面积: {dieline.TotalAreaMM2:F2} mm²");
                 Console.WriteLine($"  边界: {dieline.Bounds.Width:F1} × {dieline.Bounds.Height:F1} mm");
 
-                // 导出PDF
-                string fileName = $"Dieline_{param.Type}_{param.LengthMM}x{param.WidthMM}x{param.HeightMM}.pdf";
+                // 导出PDF（输出到项目目录下的 log/PDF/）
+                // AppContext.BaseDirectory = bin/Debug/net10.0/，上移三级即项目根目录
+                string projectDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
+                string outputDir = Path.Combine(projectDir, "log", "PDF");
+                Directory.CreateDirectory(outputDir);
+                string fileName = Path.Combine(outputDir, $"Dieline_{param.Type}_{param.LengthMM}x{param.WidthMM}x{param.HeightMM}.pdf");
                 exporter.ExportDieline(dieline, fileName, param);
 
                 Console.WriteLine($"  ✓ 已导出: {fileName}\n");
@@ -159,4 +200,3 @@ class Example
         }
     }
 }
-
