@@ -1,2 +1,8 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+using PicoGK;
+using FluidSimulation;
+
+PicoGK.Library.Go(
+    0.3f,        // 体素分辨率 0.3mm（精度与速度的平衡）
+    AeroTubeDesign.Run,
+    "E:/desktop_files/workplace/vscode/Csharp/LEAP71/PicoGKMedical/FluidSimulation/log"
+);
