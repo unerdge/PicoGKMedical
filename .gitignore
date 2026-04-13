@@ -1,6 +1,7 @@
 # Build outputs
 **/bin/
 **/obj/
+**/log/
 
 # But keep runtime files
 !**/bin/runtime/
