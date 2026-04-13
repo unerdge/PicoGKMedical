@@ -6,9 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="PicoGK" Version="1.7.7.4" />
   </ItemGroup>
-  
+
 </Project>
