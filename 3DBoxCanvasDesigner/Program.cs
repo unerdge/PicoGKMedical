@@ -22,16 +22,16 @@ class Program
     static void Main(string[] args)
     {
         // 如果有命令行参数，使用旧的控制台模式
-        RunConsoleMode();
-        // if (args.Length > 0 && args[0] == "--console")
-        // {
-        //     RunConsoleMode();
-        // }
-        // else
-        // {
-        //     // 启动GUI模式
-        //     BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
-        // }
+        // RunConsoleMode();
+        if (args.Length > 0 && args[0] == "--console")
+        {
+            RunConsoleMode();
+        }
+        else
+        {
+            // 启动GUI模式
+            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+        }
     }
 
     /// <summary>
