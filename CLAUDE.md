@@ -14,26 +14,26 @@ dotnet build BoneConstruct.sln
 
 # Build individual projects
 dotnet build BoneConstruct/BoneConstruct.csproj
-dotnet build MagicCube/MagicCube.csproj
-dotnet build MatrixLearning/MatrixLearning.csproj
 dotnet build 3DBoxCanvasDesigner/3DBoxCanvasDesigner.csproj
+dotnet build FluidSimulation/FluidSimulation.csproj
+dotnet build Leap71_Repo_Display/Leap71_Repo_Display.csproj
 
 # Run projects
 dotnet run --project BoneConstruct/
-dotnet run --project MagicCube/
-dotnet run --project MatrixLearning/
-dotnet run --project 3DBoxCanvasDesigner/
+dotnet run --project 3DBoxCanvasDesigner/        # Launches Avalonia GUI
+dotnet run --project FluidSimulation/
+dotnet run --project Leap71_Repo_Display/
 ```
 
 ## Projects
 
-**BoneConstruct** - Main computational geometry engine with shape construction framework and example applications (e.g., HelixHeatX heat exchanger design).
+**BoneConstruct** - Main medical device design engine for personalized orthopedic implants. Loads patient bone STL files (from CT scans), applies biomechanical optimization, generates patient-specific porous structures, and exports manufacturing-ready models.
 
-**MagicCube** - Standalone magic square solver using depth-first search.
+**3DBoxCanvasDesigner** - 3D packaging box parametric design system with dieline generation and PDF export. GUI-based platform (Avalonia) for industrial packaging design applications.
 
-**MatrixLearning** - Simple Matrix4x4 operations demo.
+**FluidSimulation** - Aerodynamic simulation module for fluid flow geometry preprocessing. Supports OpenVDB field export for CFD solver integration (e.g., OpenFOAM). Used for experimental nozzle/tube aerodynamic optimization.
 
-**3DBoxCanvasDesigner** - 3D packaging box parametric design system with dieline generation and PDF export.
+**Leap71_Repo_Display** - Repository showcase and demonstration application. Displays geometric models and references for collaborative projects.
 
 ## Architecture
 
@@ -74,9 +74,10 @@ The `Example.Run()` method contains the geometry construction logic. PicoGK mana
 
 ## Dependencies
 
-- **BoneConstruct & MagicCube:** PicoGK NuGet package (v1.7.7.4)
-- **3DBoxCanvasDesigner:** PicoGK (v1.7.7.4) + PdfSharp (v6.2.0)
-- **MatrixLearning:** System.Numerics only
+- **BoneConstruct:** PicoGK NuGet package (v1.7.7.4)
+- **3DBoxCanvasDesigner:** PicoGK (v1.7.7.4) + PdfSharp (v6.2.0) + Avalonia (cross-platform UI)
+- **FluidSimulation:** PicoGK (v1.7.7.4)
+- **Leap71_Repo_Display:** PicoGK (v1.7.7.4) + ShapeKernel framework
 
 ## Code Organization
 
@@ -92,14 +93,15 @@ The `Example.Run()` method contains the geometry construction logic. PicoGK mana
 
 ### Always Check Source Code First
 
-**MANDATORY:** Before using any PicoGK API, consult the source code at:
-- `E:\desktop_files\workplace\vscode\Csharp\LEAP71\PicoGK-main`
+**MANDATORY:** Before using any PicoGK API, consult the source code:
+- **Local:** `../PicoGK-main` (sibling directory if available)
+- **GitHub:** https://github.com/leap71/PicoGK
 
-**DO NOT assume API behavior.** Check:
-1. Parameter order and types
-2. Return values
-3. Method overloads
-4. Comments and documentation
+**DO NOT assume API behavior.** Verify:
+1. Parameter order and types in method signatures
+2. Return values and edge cases
+3. Method overloads and optional parameters
+4. Documentation comments in source code
 
 ### Color and Transparency
 
@@ -226,27 +228,49 @@ After modifying PicoGK-related code:
 
 ---
 
-## 3DBoxCanvasDesigner Specific Notes
+## Project-Specific Implementation Notes
 
-### Project Structure
+### 3DBoxCanvasDesigner Structure
 ```
 3DBoxCanvasDesigner/
 ├── BoxParameters.cs          # Box parameter model
-├── BoxGenerator.cs           # 3D geometry generator (Mesh-based)
+├── BoxGenerator.cs           # 3D geometry generator (voxel-based)
 ├── Dieline/
 │   ├── DielineData.cs       # 2D dieline data structures
-│   └── DielineGenerator.cs  # Dieline generation logic
+│   └── DielineGenerator.cs  # Dieline generation logic (all 6 box types)
 └── Export/
-    └── PdfExporter.cs       # PDF export (uses Helvetica fonts)
+    └── PdfExporter.cs       # PDF export with FontResolver
 ```
 
-### Current Implementation Status
+**Features:**
 - ✅ 6 box types: TuckEnd, Mailer, CorrugatedRSC, AutoLockBottom, PillowBox, RigidBox
-- ✅ Real wall thickness (using ShapeKernel BaseBox + voxOffset)
-- ✅ 2D dieline generation for all 6 types
-- ✅ PDF export with FontResolver implementation
-- ✅ Transparent 3D preview using Sh.PreviewVoxels
+- ✅ Real wall thickness simulation (ShapeKernel BaseBox + voxOffset)
+- ✅ 2D dieline generation for manufacturing
+- ✅ PDF export with PdfSharp 6.x FontResolver
+- ✅ Transparent 3D preview using PicoGK visualization
 
-### Development Roadmap
-See: `ProblemFiles/report/3_开发进度报告.md`
+### FluidSimulation Structure
+```
+FluidSimulation/
+├── AeroTubeDesign.cs        # Aerodynamic nozzle geometry design
+└── VDB export functionality  # OpenVDB field export for CFD solvers
+```
+
+**Purpose:** Preprocessing geometry for external CFD solvers (e.g., OpenFOAM). Demonstrates VDB export pattern for complex fluid domains.
+
+### BoneConstruct Structure
+```
+BoneConstruct/
+├── BoneModel.cs             # Patient bone STL loading and analysis
+├── BoneImplant/
+│   └── CustomImplant.cs     # Personalized implant design algorithms
+├── BoneSTL/                 # Input bone geometry files
+└── Output/                  # Generated implant STL files
+```
+
+**Key Workflow:**
+1. Load patient bone STL (CT reconstruction)
+2. Analyze bone geometry and force distribution
+3. Generate optimized implant with porous lattice
+4. Export manufacturing-ready STL
 
