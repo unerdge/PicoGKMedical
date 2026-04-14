@@ -5,10 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoneConstruct", "BoneConstruct\BoneConstruct.csproj", "{0A504778-ED1A-4463-8B0D-5869BBD49805}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicCube", "MagicCube\MagicCube.csproj", "{F5BA1886-321A-49D4-B763-2FE5DAA3C3AA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixLearning", "MatrixLearning\MatrixLearning.csproj", "{1D0435D1-74D9-4875-A3F7-EAD71570AE00}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DBoxCanvasDesigner", "3DBoxCanvasDesigner\3DBoxCanvasDesigner.csproj", "{47A94126-4433-43E6-B684-DCB0CD5277F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluidSimulation", "FluidSimulation\FluidSimulation.csproj", "{66334D6C-EE29-4D23-8886-388CA84311FA}"
