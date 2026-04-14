@@ -34,6 +34,11 @@ namespace BoneConstruct
             //   FillMode.SchwarzPrimitive — 规则 Schwarz Primitive
             //   FillMode.SchwarzDiamond   — Schwarz Diamond
             //   FillMode.Gyroid           — Gyroid
+            /*
+            RandomizedTPMS 为什么适合骨骼植入物： 随机化的 Schwarz Primitive
+            在结构上模拟骨小梁的不规则多孔结构，有利于骨细胞长入（骨整合），同时保持足够力学强度
+            ——这也是文献中金属骨科植入物最常用的内部填充策略。
+            */
             FillMode eFill = FillMode.RandomizedTPMS;
 
             BoneImplant oImplant = new BoneImplant(
@@ -46,13 +51,13 @@ namespace BoneConstruct
 
             Voxels voxImplant = oImplant.voxConstruct();
 
-            // 3. 预览（骨骼半透明蓝 + 植入物橙色）
-            Sh.PreviewVoxels(voxImplant,    new ColorFloat("#FF8C00"),0.8f);
+            // 3. 预览（骨骼灰色）
+            Sh.PreviewVoxels(voxImplant,    new ColorFloat("#9F9F9F"),0.5f);
             Library.oViewer().RequestScreenShot(LogPath + $"Screenshot_00.TGA");
             Uf.Wait(0.5f);
-            Sh.PreviewVoxels(oBone.voxBone, new ColorFloat("#9F9F9F"),0.5f);
-            Library.oViewer().RequestScreenShot(LogPath + $"Screenshot_01.TGA");
-            Uf.Wait(0.5f);
+            // Sh.PreviewVoxels(oBone.voxBone, new ColorFloat("#9F9F9F"),0.5f);
+            // Library.oViewer().RequestScreenShot(LogPath + $"Screenshot_01.TGA");
+            // Uf.Wait(0.5f);
 
             // 4. 导出STL用于3D打印
             Sh.ExportVoxelsToSTLFile(voxImplant, strOut);
