@@ -9,7 +9,7 @@ namespace BoneConstruct
     {
         public static void Main(string[] args)
         {
-            Example.Run();
+            
         }
     }
 }
