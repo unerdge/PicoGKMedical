@@ -15,7 +15,7 @@ namespace FluidSimulation
         // ── 边界条件（对应课题要求）──────────────────────────────────────
         const float INLET_VELOCITY  = 0.2f;     // 轴向进口速度 m/s
         const float INLET_TEMP      = 300f;     // 温度 K（常温空气）
-        const int   ITER_COUNT      = 300;      // 迭代步数（学生版建议 200-500）
+        const int   ITER_COUNT      = 50;       // 可行性验证：50步够看趋势（精确仿真用300+）
 
         public static SimResult Run(string stlPath, string logFolder)
         {
@@ -43,12 +43,12 @@ namespace FluidSimulation
                 /mesh/check
                 /mesh/repair-improve/repair
 
-                ; ── 求解器设置（压力基，稳态，k-epsilon 湍流模型）──────────
+                ; ── 求解器设置（压力基，稳态，层流模型——可行性验证用，省去湍流方程）
                 /define/models/solver/pressure-based yes
-                /define/models/viscous/ke-standard yes
+                /define/models/viscous/laminar yes
 
-                ; ── 流体材料（空气，默认）──────────────────────────────────
-                /define/materials/change-create air air yes ideal-gas no no no no no no
+                ; ── 流体材料（空气，不可压缩，固定密度省去能量方程）──────────
+                /define/materials/change-create air air yes constant no no no no no no
 
                 ; ── 边界条件 ────────────────────────────────────────────────
                 ; 进口：速度入口，轴向 {INLET_VELOCITY} m/s
@@ -62,11 +62,9 @@ namespace FluidSimulation
                 ; 壁面：无滑移（默认）
                 /define/boundary-conditions/wall wall () no 0 no no no 0.5 no 1
 
-                ; ── 求解控制 ─────────────────────────────────────────────────
-                /solve/set/under-relaxation/pressure 0.3
-                /solve/set/under-relaxation/mom 0.5
-                /solve/set/under-relaxation/k 0.5
-                /solve/set/under-relaxation/epsilon 0.5
+                ; ── 求解控制（激进松弛因子，加快收敛，可行性验证可接受）──────
+                /solve/set/under-relaxation/pressure 0.5
+                /solve/set/under-relaxation/mom 0.7
 
                 ; ── 初始化并迭代 ──────────────────────────────────────────────
                 /solve/initialize/initialize-flow
@@ -118,8 +116,8 @@ namespace FluidSimulation
                 StartInfo = new ProcessStartInfo
                 {
                     FileName               = FLUENT_EXE,
-                    // 3ddp = 3D 双精度，-g = 无 GUI，-i = journal 文件，-t2 = 2核（学生版最多4核）
-                    Arguments              = $"3ddp -g -i \"{journalPath}\" -t2",
+                    // 3d = 3D 单精度（可行性验证用，比双精度快约30%）-g = 无GUI，-t2 = 2核
+                    Arguments              = $"3d -g -i \"{journalPath}\" -t2",
                     UseShellExecute        = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError  = true,
